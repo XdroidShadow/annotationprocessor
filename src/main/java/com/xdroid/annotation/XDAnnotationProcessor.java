@@ -39,6 +39,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
         }
     }
 
+
     @Override
     public synchronized void init(ProcessingEnvironment env) {
         super.init(env);
@@ -49,9 +50,10 @@ public class XDAnnotationProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
+        handleTip(env, XDImportant.class);
+        handleTip(env, XDModify.class);
         handleTip(env, XDTip.class);
-        handleTip(env, XDTip.class);
-        handleTip(env, XDTip.class);
+        printMsg(line);
         return false;
     }
 
@@ -75,12 +77,11 @@ public class XDAnnotationProcessor extends AbstractProcessor {
             //怎么获取这个方法所在的类？
             printMsg(String.format("%s%s", vLine, info));
         }
-        printMsg(line);
     }
 
     private String getAnnotationValue(Element item, Class<? extends Annotation> a) {
         String value = "";
-        switch (a.getName()) {
+        switch (a.getSimpleName()) {
             case "XDTip":
                 value = item.getAnnotation(XDTip.class).value();
                 break;
@@ -128,15 +129,11 @@ public class XDAnnotationProcessor extends AbstractProcessor {
         for (int i = 0; i < size - 1; i++) {
             element = parameters.get(i);
             sb.append(element.getSimpleName());
-            sb.append("=");
-            sb.append(element.getConstantValue());
             sb.append(",");
         }
         if (size > 0) {
             element = parameters.get(size - 1);
             sb.append(element.getSimpleName());
-            sb.append("=");
-            sb.append(element.getConstantValue());
         }
         return sb.toString();
     }
