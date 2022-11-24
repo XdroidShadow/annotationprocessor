@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="xdroid-annotation-tool">
+    <output-path>$PROJECT_DIR$/out/artifacts/xdroid_annotation_tool</output-path>
+    <root id="archive" name="xdroid-annotation-tool.jar">
+      <element id="module-output" name="xdroid_jars.main" />
+    </root>
+  </artifact>
+</component>
