@@ -82,6 +82,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                         ownerClass, getAnnotationType(a), elementName, elementInfo, getAnnotationValue(item, a));
                 //怎么获取这个方法所在的类？
                 printMsg(String.format("%s%s", vLine, info));
+                printMsg("item == "+item.getSimpleName().toString());
             }
         } catch (Exception e) {
             printMsg(e.getMessage());
