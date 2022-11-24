@@ -69,14 +69,14 @@ public class XDAnnotationProcessor extends AbstractProcessor {
             //因为我们知道SQLString元素的使用范围是在域上，所以这里我们进行了强制类型转换
             //VariableElement
             if (item instanceof ExecutableElement) {
-                elementInfo = executableElementToString((ExecutableElement) item);
+                elementInfo = "("+executableElementToString((ExecutableElement) item)+")";
             } else if (item instanceof VariableElement) {
-                elementInfo = variableToString((VariableElement) item);
+                elementInfo = "="+variableToString((VariableElement) item);
             } else {
                 elementInfo = "";
             }
             //| IndexActivity(XDModify)/testModify(info_1,info_2,time_2)/做了修改
-            String info = String.format("%s(%s)/%s(%s)/%s",
+            String info = String.format("%s(%s)/%s%s/%s",
                     ownerClass, getAnnotationType(a), elementName, elementInfo, getAnnotationValue(item, a));
             //怎么获取这个方法所在的类？
             printMsg(String.format("%s%s", vLine, info));
