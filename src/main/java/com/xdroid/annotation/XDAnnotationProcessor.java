@@ -67,14 +67,19 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                 //因为我们知道SQLString元素的使用范围是在域上，所以这里我们进行了强制类型转换
                 //VariableElement
                 if (item instanceof ExecutableElement) {//方法
+
+                    printMsg("item == "+item.getSimpleName().toString() +" ExecutableElement");
                     elementInfo = "(" + executableElementToString((ExecutableElement) item) + ")";
                 } else if (item instanceof VariableElement) {//变量
+                    printMsg("item == "+item.getSimpleName().toString() +" VariableElement");
                     elementInfo = "=" + variableToString((VariableElement) item);
                 } else if (item instanceof TypeParameterElement) {//参数
+                    printMsg("item == "+item.getSimpleName().toString() +" TypeParameterElement");
                     ownerClass = item.getEnclosingElement().getSimpleName().toString() + "/"
                             + item.getEnclosingElement().getEnclosingElement().getSimpleName().toString();
                     elementInfo = "=" + variableToString((VariableElement) item);
                 } else {
+                    printMsg("item == "+item.getSimpleName().toString() +" else");
                     elementInfo = "";
                 }
                 //| IndexActivity(XDModify)/testModify(info_1,info_2,time_2)/做了修改
@@ -82,7 +87,6 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                         ownerClass, getAnnotationType(a), elementName, elementInfo, getAnnotationValue(item, a));
                 //怎么获取这个方法所在的类？
                 printMsg(String.format("%s%s", vLine, info));
-                printMsg("item == "+item.getSimpleName().toString());
             }
         } catch (Exception e) {
             printMsg(e.getMessage());
