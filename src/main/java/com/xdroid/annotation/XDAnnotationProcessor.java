@@ -1,7 +1,5 @@
 package com.xdroid.annotation;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -29,7 +27,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
     private String line = "-------------------------------------------------------------------------------------";
     private String vLine = "| ";
 
-    public void parser(@NotNull Class<?> c) {
+    public void parser( Class<?> c) {
         Objects.requireNonNull(c);
         Method[] methods = c.getMethods();
         for (Method m : methods) {
