@@ -127,6 +127,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
         annotaions.add("com.xdroid.annotation.XDTip");
         annotaions.add("com.xdroid.annotation.XDImportant");
         annotaions.add("com.xdroid.annotation.XDModify");
+        annotaions.add("com.xdroid.annotation.XDlocalvar");
         return annotaions;
     }
 
