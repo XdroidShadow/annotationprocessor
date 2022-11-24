@@ -27,7 +27,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
     private String line = "-------------------------------------------------------------------------------------";
     private String vLine = "| ";
 
-    public void parser( Class<?> c) {
+    public void parser(Class<?> c) {
         Objects.requireNonNull(c);
         Method[] methods = c.getMethods();
         for (Method m : methods) {
@@ -44,7 +44,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
     public synchronized void init(ProcessingEnvironment env) {
         super.init(env);
         messager = env.getMessager();
-        printMsg(line);
+//        printMsg(line);
         printMsg(String.format("%sxdroid-build-information", vLine));
     }
 
@@ -53,7 +53,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
         handleTip(env, XDImportant.class);
         handleTip(env, XDModify.class);
         handleTip(env, XDTip.class);
-        printMsg(line);
+//        printMsg(line);
         return false;
     }
 
@@ -61,6 +61,9 @@ public class XDAnnotationProcessor extends AbstractProcessor {
         //得到使用了 【XDTip】 注解的元素
         Set<? extends Element> eleStrSet = env.getElementsAnnotatedWith(a);
         for (Element item : eleStrSet) {
+            //获取注解所在类对象
+            String ownerClass = item.getEnclosingElement().getSimpleName().toString();
+
             String elementName = item.getSimpleName().toString();
             String elementInfo;
             String annotationValue = getAnnotationValue(item, a);
@@ -73,7 +76,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
             } else {
                 elementInfo = "";
             }
-            String info = String.format("%s >> %s(%s) >> %s", a.getName(), elementName, elementInfo, annotationValue);
+            String info = String.format("%s > %s > %s(%s) > %s", ownerClass, a.getSimpleName(), elementName, elementInfo, annotationValue);
             //怎么获取这个方法所在的类？
             printMsg(String.format("%s%s", vLine, info));
         }
@@ -141,8 +144,6 @@ public class XDAnnotationProcessor extends AbstractProcessor {
     private String variableToString(VariableElement item) {
         return "" + item.getConstantValue();
     }
-
-
 
 
 }
