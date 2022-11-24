@@ -66,21 +66,21 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                 String elementInfo;
                 //通过item.getKind()来判断类型
                 if (item.getKind() == ElementKind.METHOD) {//方法
-                    annotationType = "ElementKind.METHOD";
+                    annotationType = "METHOD";
                     elementInfo = "(" + executableElementToString((ExecutableElement) item) + ")";
                 } else if (item.getKind() == ElementKind.FIELD) {//变量
-                    annotationType = "ElementKind.FIELD";
+                    annotationType = "FIELD";
                     elementInfo = "=" + variableToString((VariableElement) item);
                 } else if (item.getKind() == ElementKind.PARAMETER) {//参数
-                    annotationType = "ElementKind.PARAMETER";
-                    ownerClass = item.getEnclosingElement().getSimpleName().toString() + "/"
-                            + item.getEnclosingElement().getEnclosingElement().getSimpleName().toString();
+                    annotationType = "PARAMETER";
+                    ownerClass = item.getEnclosingElement().getEnclosingElement().getSimpleName().toString() + "/"
+                            + item.getEnclosingElement().getSimpleName().toString();
                     elementInfo = "=" + variableToString((VariableElement) item);
                 } else {
                     annotationType = "else";
                     elementInfo = "";
                 }
-                String info = String.format("%s(%s)/%s%s/%s/%s",
+                String info = String.format("%s(%s)/%s%s  %s/%s",
                         ownerClass, getAnnotationType(a), elementName, elementInfo, a.getSimpleName(), annotationType);
                 printMsg(String.format("%s%s", vLine, info));
             }
