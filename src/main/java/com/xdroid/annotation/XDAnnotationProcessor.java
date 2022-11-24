@@ -5,10 +5,7 @@ import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.tools.Diagnostic;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -58,28 +55,36 @@ public class XDAnnotationProcessor extends AbstractProcessor {
     }
 
     private void handleTip(RoundEnvironment env, Class<? extends Annotation> a) {
-        //得到使用了 【XDTip】 注解的元素
-        Set<? extends Element> eleStrSet = env.getElementsAnnotatedWith(a);
-        for (Element item : eleStrSet) {
-            //获取注解所在类对象  getEnclosingElement
-            String ownerClass = item.getEnclosingElement().getSimpleName().toString();
+        try {
+            //得到使用了 【XDTip】 注解的元素
+            Set<? extends Element> eleStrSet = env.getElementsAnnotatedWith(a);
+            for (Element item : eleStrSet) {
+                //获取注解所在类对象  getEnclosingElement
+                String ownerClass = item.getEnclosingElement().getSimpleName().toString();
 
-            String elementName = item.getSimpleName().toString();
-            String elementInfo;
-            //因为我们知道SQLString元素的使用范围是在域上，所以这里我们进行了强制类型转换
-            //VariableElement
-            if (item instanceof ExecutableElement) {
-                elementInfo = "("+executableElementToString((ExecutableElement) item)+")";
-            } else if (item instanceof VariableElement) {
-                elementInfo = "="+variableToString((VariableElement) item);
-            } else {
-                elementInfo = "";
+                String elementName = item.getSimpleName().toString();
+                String elementInfo;
+                //因为我们知道SQLString元素的使用范围是在域上，所以这里我们进行了强制类型转换
+                //VariableElement
+                if (item instanceof ExecutableElement) {//方法
+                    elementInfo = "(" + executableElementToString((ExecutableElement) item) + ")";
+                } else if (item instanceof VariableElement) {//变量
+                    elementInfo = "=" + variableToString((VariableElement) item);
+                } else if (item instanceof TypeParameterElement) {//参数
+                    ownerClass = item.getEnclosingElement().getSimpleName().toString() + "/"
+                            + item.getEnclosingElement().getEnclosingElement().getSimpleName().toString();
+                    elementInfo = "=" + variableToString((VariableElement) item);
+                } else {
+                    elementInfo = "";
+                }
+                //| IndexActivity(XDModify)/testModify(info_1,info_2,time_2)/做了修改
+                String info = String.format("%s(%s)/%s%s/%s",
+                        ownerClass, getAnnotationType(a), elementName, elementInfo, getAnnotationValue(item, a));
+                //怎么获取这个方法所在的类？
+                printMsg(String.format("%s%s", vLine, info));
             }
-            //| IndexActivity(XDModify)/testModify(info_1,info_2,time_2)/做了修改
-            String info = String.format("%s(%s)/%s%s/%s",
-                    ownerClass, getAnnotationType(a), elementName, elementInfo, getAnnotationValue(item, a));
-            //怎么获取这个方法所在的类？
-            printMsg(String.format("%s%s", vLine, info));
+        } catch (Exception e) {
+            printMsg(e.getMessage());
         }
     }
 
