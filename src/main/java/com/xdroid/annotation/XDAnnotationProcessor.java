@@ -61,12 +61,11 @@ public class XDAnnotationProcessor extends AbstractProcessor {
         //得到使用了 【XDTip】 注解的元素
         Set<? extends Element> eleStrSet = env.getElementsAnnotatedWith(a);
         for (Element item : eleStrSet) {
-            //获取注解所在类对象
+            //获取注解所在类对象  getEnclosingElement
             String ownerClass = item.getEnclosingElement().getSimpleName().toString();
 
             String elementName = item.getSimpleName().toString();
             String elementInfo;
-            String annotationValue = getAnnotationValue(item, a);
             //因为我们知道SQLString元素的使用范围是在域上，所以这里我们进行了强制类型转换
             //VariableElement
             if (item instanceof ExecutableElement) {
@@ -76,7 +75,9 @@ public class XDAnnotationProcessor extends AbstractProcessor {
             } else {
                 elementInfo = "";
             }
-            String info = String.format("%s > %s > %s(%s) > %s", ownerClass, a.getSimpleName(), elementName, elementInfo, annotationValue);
+            //| IndexActivity(XDModify)/testModify(info_1,info_2,time_2)/做了修改
+            String info = String.format("%s(%s)/%s(%s)/%s",
+                    ownerClass, getAnnotationType(a), elementName, elementInfo, getAnnotationValue(item, a));
             //怎么获取这个方法所在的类？
             printMsg(String.format("%s%s", vLine, info));
         }
@@ -93,6 +94,22 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                 break;
             case "XDModify":
                 value = item.getAnnotation(XDModify.class).value();
+                break;
+        }
+        return value;
+    }
+
+    private String getAnnotationType(Class<? extends Annotation> a) {
+        String value = "";
+        switch (a.getSimpleName()) {
+            case "XDTip":
+                value = "提示";
+                break;
+            case "XDImportant":
+                value = "注意";
+                break;
+            case "XDModify":
+                value = "修改";
                 break;
         }
         return value;
