@@ -64,16 +64,15 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                 String annotationType = "";
                 String elementName = item.getSimpleName().toString();
                 String elementInfo;
-                //因为我们知道SQLString元素的使用范围是在域上，所以这里我们进行了强制类型转换
-                //VariableElement
-                if (item instanceof ExecutableElement) {//方法
-                    annotationType = "ExecutableElement";
+                //通过item.getKind()来判断类型
+                if (item.getKind() == ElementKind.METHOD) {//方法
+                    annotationType = "ElementKind.METHOD";
                     elementInfo = "(" + executableElementToString((ExecutableElement) item) + ")";
-                } else if (item instanceof VariableElement) {//变量
-                    annotationType = "VariableElement";
+                } else if (item.getKind() == ElementKind.FIELD) {//变量
+                    annotationType = "ElementKind.FIELD";
                     elementInfo = "=" + variableToString((VariableElement) item);
-                } else if (item instanceof TypeParameterElement) {//参数
-                    annotationType = "TypeParameterElement";
+                } else if (item.getKind() == ElementKind.PARAMETER) {//参数
+                    annotationType = "ElementKind.PARAMETER";
                     ownerClass = item.getEnclosingElement().getSimpleName().toString() + "/"
                             + item.getEnclosingElement().getEnclosingElement().getSimpleName().toString();
                     elementInfo = "=" + variableToString((VariableElement) item);
@@ -81,10 +80,8 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                     annotationType = "else";
                     elementInfo = "";
                 }
-                //| IndexActivity(XDModify)/testModify(info_1,info_2,time_2)/做了修改
                 String info = String.format("%s(%s)/%s%s/%s/%s",
-                        ownerClass, getAnnotationType(a), elementName, elementInfo, getAnnotationValue(item, a),annotationType);
-                //怎么获取这个方法所在的类？
+                        ownerClass, getAnnotationType(a), elementName, elementInfo, a.getSimpleName(), annotationType);
                 printMsg(String.format("%s%s", vLine, info));
             }
         } catch (Exception e) {
