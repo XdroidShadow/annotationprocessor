@@ -5,13 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ *   修改过后进行标注
+ */
 @Retention(RetentionPolicy.CLASS)
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.LOCAL_VARIABLE})
-public @interface XDTip  {
+public @interface XDModify {
 
-   /**
-    *   提示信息
-    */
-   String value() default "";
-
+    String value() default  "";
 }
