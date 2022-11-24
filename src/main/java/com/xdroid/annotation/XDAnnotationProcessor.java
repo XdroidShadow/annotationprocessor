@@ -61,30 +61,29 @@ public class XDAnnotationProcessor extends AbstractProcessor {
             for (Element item : eleStrSet) {
                 //获取注解所在类对象  getEnclosingElement
                 String ownerClass = item.getEnclosingElement().getSimpleName().toString();
-
+                String annotationType = "";
                 String elementName = item.getSimpleName().toString();
                 String elementInfo;
                 //因为我们知道SQLString元素的使用范围是在域上，所以这里我们进行了强制类型转换
                 //VariableElement
                 if (item instanceof ExecutableElement) {//方法
-
-                    printMsg("item == "+item.getSimpleName().toString() +" ExecutableElement");
+                    annotationType = "ExecutableElement";
                     elementInfo = "(" + executableElementToString((ExecutableElement) item) + ")";
                 } else if (item instanceof VariableElement) {//变量
-                    printMsg("item == "+item.getSimpleName().toString() +" VariableElement");
+                    annotationType = "VariableElement";
                     elementInfo = "=" + variableToString((VariableElement) item);
                 } else if (item instanceof TypeParameterElement) {//参数
-                    printMsg("item == "+item.getSimpleName().toString() +" TypeParameterElement");
+                    annotationType = "TypeParameterElement";
                     ownerClass = item.getEnclosingElement().getSimpleName().toString() + "/"
                             + item.getEnclosingElement().getEnclosingElement().getSimpleName().toString();
                     elementInfo = "=" + variableToString((VariableElement) item);
                 } else {
-                    printMsg("item == "+item.getSimpleName().toString() +" else");
+                    annotationType = "else";
                     elementInfo = "";
                 }
                 //| IndexActivity(XDModify)/testModify(info_1,info_2,time_2)/做了修改
-                String info = String.format("%s(%s)/%s%s/%s",
-                        ownerClass, getAnnotationType(a), elementName, elementInfo, getAnnotationValue(item, a));
+                String info = String.format("%s(%s)/%s%s/%s/%s",
+                        ownerClass, getAnnotationType(a), elementName, elementInfo, getAnnotationValue(item, a),annotationType);
                 //怎么获取这个方法所在的类？
                 printMsg(String.format("%s%s", vLine, info));
             }
