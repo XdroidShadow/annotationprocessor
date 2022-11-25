@@ -50,6 +50,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
         handleTip(env, XDImportant.class);
         handleTip(env, XDModify.class);
         handleTip(env, XDTip.class);
+        handleTip(env, XDTodo.class);
 //        printMsg(line);
         return false;
     }
