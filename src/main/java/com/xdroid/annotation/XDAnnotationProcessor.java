@@ -75,13 +75,13 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                     annotationType = "PARAMETER";
                     ownerClass = item.getEnclosingElement().getEnclosingElement().getSimpleName().toString() + "/"
                             + item.getEnclosingElement().getSimpleName().toString();
-                    elementInfo = "=" + variableToString((VariableElement) item);
+                    elementInfo = " >";
                 } else {
                     annotationType = "else";
                     elementInfo = "";
                 }
                 String info = String.format("%s(%s)/%s%s  %s/%s",
-                        ownerClass, a.getSimpleName(), elementName, elementInfo, getAnnotationValue(item,a), annotationType);
+                        ownerClass, a.getSimpleName(), elementName, elementInfo, getAnnotationValue(item, a), annotationType);
                 printMsg(String.format("%s%s", vLine, info));
             }
         } catch (Exception e) {
@@ -101,21 +101,12 @@ public class XDAnnotationProcessor extends AbstractProcessor {
             case "XDModify":
                 value = item.getAnnotation(XDModify.class).value();
                 break;
-        }
-        return value;
-    }
-
-    private String getAnnotationType(Class<? extends Annotation> a) {
-        String value = "";
-        switch (a.getSimpleName()) {
-            case "XDTip":
-                value = "提示";
-                break;
-            case "XDImportant":
-                value = "注意";
-                break;
-            case "XDModify":
-                value = "修改";
+            case "XDTodo":
+                String time = item.getAnnotation(XDTodo.class).time();
+                if (!time.isEmpty()) {
+                    time = "/" + time;
+                }
+                value = item.getAnnotation(XDTodo.class).value() + time;
                 break;
         }
         return value;
@@ -127,7 +118,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
         annotaions.add("com.xdroid.annotation.XDTip");
         annotaions.add("com.xdroid.annotation.XDImportant");
         annotaions.add("com.xdroid.annotation.XDModify");
-        annotaions.add("com.xdroid.annotation.XDlocalvar");
+        annotaions.add("com.xdroid.annotation.XDTodo");
         return annotaions;
     }
 

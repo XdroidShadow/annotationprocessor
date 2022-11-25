@@ -6,12 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.CLASS)
-@Target({ ElementType.LOCAL_VARIABLE})
-public @interface XDlocalvar {
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.LOCAL_VARIABLE})
+public @interface XDTodo {
 
-   /**
-    *   提示信息
-    */
    String value() default "";
+
+   String time() default "";
 
 }
