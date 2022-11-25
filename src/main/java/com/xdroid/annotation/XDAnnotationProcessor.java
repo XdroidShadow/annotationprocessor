@@ -81,7 +81,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                     elementInfo = "";
                 }
                 String info = String.format("%s(%s)/%s%s  %s/%s",
-                        ownerClass, getAnnotationType(a), elementName, elementInfo, a.getSimpleName(), annotationType);
+                        ownerClass, a.getSimpleName(), elementName, elementInfo, getAnnotationValue(item,a), annotationType);
                 printMsg(String.format("%s%s", vLine, info));
             }
         } catch (Exception e) {
