@@ -87,8 +87,6 @@ public class XDAnnotationProcessor extends AbstractProcessor {
 //                        ownerClass, a.getSimpleName(), elementName, elementInfo, getAnnotationValue(item, a), annotationType);
 
                 //警告: | XDTestAidl:@XDTodo:METHOD:test()  自定义接口onBind；2022年11月25日16:03:38
-                String info = String.format("%s(@%s)%s%s  %s/%s",
-                        ownerClass, a.getSimpleName(), elementName, elementInfo, getAnnotationValue(item, a), annotationType);
                 StringBuilder infoSb = new StringBuilder();
                 infoSb.append(ownerClass);//XDTestAidl
                 infoSb.append(sp);
@@ -100,7 +98,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                 infoSb.append(sp);
                 infoSb.append(getAnnotationValue(item, a));//自定义接口onBind；2022年11月25日16:03:38
 
-                printMsg(String.format("%s%s", vLine, info));
+                printMsg(String.format("%s%s", vLine, infoSb.toString()));
             }
         } catch (Exception e) {
             printMsg(e.getMessage());
