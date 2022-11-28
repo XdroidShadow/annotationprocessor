@@ -75,7 +75,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                     annotationType = "PARAMETER";
                     ownerClass = item.getEnclosingElement().getEnclosingElement().getSimpleName().toString() + "."
                             + item.getEnclosingElement().getSimpleName().toString();
-                    elementInfo = " >";
+                    elementInfo = "";
                 } else {
                     annotationType = "else";
                     elementInfo = "";
@@ -94,7 +94,8 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                 infoSb.append(sp);
                 infoSb.append(annotationType);//METHOD
                 infoSb.append(sp);
-                infoSb.append(elementInfo);//test()
+                infoSb.append(elementName);//testAnnotation()
+                infoSb.append(elementInfo);//参数
                 infoSb.append(sp);
                 infoSb.append(getAnnotationValue(item, a));//自定义接口onBind；2022年11月25日16:03:38
 
@@ -122,7 +123,14 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                 if (!time.isEmpty()) {
                     time = "，" + time;
                 }
-                value = item.getAnnotation(XDTodo.class).value() + time;
+                StringBuilder tempSb = new StringBuilder();
+                tempSb.append("【");
+                tempSb.append("TODO:");
+                tempSb.append(time);
+                tempSb.append(" ");
+                tempSb.append(item.getAnnotation(XDTodo.class).value());
+                tempSb.append("】");
+                value = tempSb.toString();
                 break;
         }
         return value;
