@@ -90,9 +90,9 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                 StringBuilder infoSb = new StringBuilder();
                 infoSb.append(ownerClass);//XDTestAidl
                 infoSb.append(sp);
+                infoSb.append("@");//@
                 infoSb.append(a.getSimpleName());//@XDTodo
                 infoSb.append(sp);
-                infoSb.append("@");//METHOD
                 infoSb.append(annotationType);//METHOD
                 infoSb.append(sp);
                 infoSb.append(elementName);//testAnnotation()
