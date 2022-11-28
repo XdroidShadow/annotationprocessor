@@ -74,7 +74,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                 } else if (item.getKind() == ElementKind.PARAMETER) {//参数
                     annotationType = "PARAMETER";
                     ownerClass = item.getEnclosingElement().getEnclosingElement().getSimpleName().toString() + "."
-                            + item.getEnclosingElement().getSimpleName().toString();
+                            + item.getEnclosingElement().getSimpleName().toString()+"()";
                     elementInfo = "";
                 } else {
                     annotationType = "else";
@@ -92,6 +92,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                 infoSb.append(sp);
                 infoSb.append(a.getSimpleName());//@XDTodo
                 infoSb.append(sp);
+                infoSb.append("@");//METHOD
                 infoSb.append(annotationType);//METHOD
                 infoSb.append(sp);
                 infoSb.append(elementName);//testAnnotation()
@@ -121,7 +122,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
             case "XDTodo":
                 String time = item.getAnnotation(XDTodo.class).time();
                 if (!time.isEmpty()) {
-                    time = "，" + time;
+                    time = time;
                 }
                 StringBuilder tempSb = new StringBuilder();
                 tempSb.append("【");
