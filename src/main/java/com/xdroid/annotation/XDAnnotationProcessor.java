@@ -23,6 +23,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
     private Messager messager;
     private String line = "-------------------------------------------------------------------------------------";
     private String vLine = "| ";
+    private String sp = ":";
 
     public void parser(Class<?> c) {
         Objects.requireNonNull(c);
@@ -35,7 +36,6 @@ public class XDAnnotationProcessor extends AbstractProcessor {
             }
         }
     }
-
 
     @Override
     public synchronized void init(ProcessingEnvironment env) {
@@ -51,7 +51,6 @@ public class XDAnnotationProcessor extends AbstractProcessor {
         handleTip(env, XDModify.class);
         handleTip(env, XDTip.class);
         handleTip(env, XDTodo.class);
-//        printMsg(line);
         return false;
     }
 
@@ -61,7 +60,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
             Set<? extends Element> eleStrSet = env.getElementsAnnotatedWith(a);
             for (Element item : eleStrSet) {
                 //获取注解所在类对象  getEnclosingElement
-                String ownerClass = item.getEnclosingElement().getSimpleName().toString();
+                String ownerClass = item.getEnclosingElement().getSimpleName().toString();//XDTestAidl
                 String annotationType = "";
                 String elementName = item.getSimpleName().toString();
                 String elementInfo;
@@ -74,15 +73,33 @@ public class XDAnnotationProcessor extends AbstractProcessor {
                     elementInfo = "=" + variableToString((VariableElement) item);
                 } else if (item.getKind() == ElementKind.PARAMETER) {//参数
                     annotationType = "PARAMETER";
-                    ownerClass = item.getEnclosingElement().getEnclosingElement().getSimpleName().toString() + "/"
+                    ownerClass = item.getEnclosingElement().getEnclosingElement().getSimpleName().toString() + "."
                             + item.getEnclosingElement().getSimpleName().toString();
                     elementInfo = " >";
                 } else {
                     annotationType = "else";
                     elementInfo = "";
                 }
-                String info = String.format("%s(%s)/%s%s  %s/%s",
+
+                //警告: | XDTestAidl(XDTodo)/test()  自定义接口 onBind/2022年11月25日16:03:38/METHOD
+                //警告: | IndexActivity/testAnnotation(XDTip)/info1 >  参数要注意/PARAMETER
+//                String info = String.format("%s(@%s)%s%s  %s/%s",
+//                        ownerClass, a.getSimpleName(), elementName, elementInfo, getAnnotationValue(item, a), annotationType);
+
+                //警告: | XDTestAidl:@XDTodo:METHOD:test()  自定义接口onBind；2022年11月25日16:03:38
+                String info = String.format("%s(@%s)%s%s  %s/%s",
                         ownerClass, a.getSimpleName(), elementName, elementInfo, getAnnotationValue(item, a), annotationType);
+                StringBuilder infoSb = new StringBuilder();
+                infoSb.append(ownerClass);//XDTestAidl
+                infoSb.append(sp);
+                infoSb.append(a.getSimpleName());//@XDTodo
+                infoSb.append(sp);
+                infoSb.append(annotationType);//METHOD
+                infoSb.append(sp);
+                infoSb.append(elementInfo);//test()
+                infoSb.append(sp);
+                infoSb.append(getAnnotationValue(item, a));//自定义接口onBind；2022年11月25日16:03:38
+
                 printMsg(String.format("%s%s", vLine, info));
             }
         } catch (Exception e) {
@@ -105,7 +122,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
             case "XDTodo":
                 String time = item.getAnnotation(XDTodo.class).time();
                 if (!time.isEmpty()) {
-                    time = "/" + time;
+                    time = "，" + time;
                 }
                 value = item.getAnnotation(XDTodo.class).value() + time;
                 break;
