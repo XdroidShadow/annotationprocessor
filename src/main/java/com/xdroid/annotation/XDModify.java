@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  *   修改过后进行标注
  */
 @Retention(RetentionPolicy.CLASS)
-@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.LOCAL_VARIABLE})
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.LOCAL_VARIABLE, ElementType.TYPE})
 public @interface XDModify {
 
     String value() default  "";
