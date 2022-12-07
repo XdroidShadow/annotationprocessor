@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 /**
  * 字符串处理工具
  */
-public class XDStrings {
+public class AnnotationToolStrings {
 
     /**
      * 避免使用 “+”

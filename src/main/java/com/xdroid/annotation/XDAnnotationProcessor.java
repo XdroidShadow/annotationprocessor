@@ -1,7 +1,5 @@
 package com.xdroid.annotation;
 
-import com.xdroid.annotation.tool.XDStrings;
-
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -16,7 +14,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static com.xdroid.annotation.tool.XDStrings.unitMultiArgs;
+import static com.xdroid.annotation.tool.AnnotationToolStrings.unitMultiArgs;
 
 /**
  * 注释解析器
@@ -111,7 +109,7 @@ public class XDAnnotationProcessor extends AbstractProcessor {
 //                infoSb.append(sp);
 //                infoSb.append(getAnnotationValue(item, a));//自定义接口onBind；2022年11月25日16:03:38
 
-                String info = unitMultiArgs(ownerClass, sp, "@",  annotationType, sp, elementName, elementInfo, "  ", getAnnotationValue(item, a));
+                String info = unitMultiArgs(ownerClass, sp, "@",a.getSimpleName(),sp,  annotationType, sp, elementName, elementInfo, "  ", getAnnotationValue(item, a));
 
                 printMsg(String.format("%s%s", vLine, info));
             }
